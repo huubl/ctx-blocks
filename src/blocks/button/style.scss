@@ -1,18 +1,57 @@
 .ctx__button {
 	display: inline-flex;
 	gap: 0.5rem;
+	font-weight: var(--wp--custom--ctx--ui--font-weight, 600);
 	align-items: center;
-	line-height: 1rem;
+	justify-content: center;
+	min-height: 2.75rem;
+	padding: var(--wp--custom--ctx--ui--padding-y, 0.625rem)
+		var(--wp--custom--ctx--ui--button--padding-x, 1rem);
+	border: 0;
+	border-radius: var(--wp--custom--ctx--ui--button--radius, var(--wp--custom--ctx--ui--radius, 0.25rem));
+	background: var(--wp--custom--ctx--ui--color, #000);
+	box-sizing: border-box;
+	color: var(--wp--custom--ctx--ui--on-color, #fff);
+	font-size: var(--wp--custom--ctx--ui--font-size, 1rem);
+	line-height: 1.2;
 	cursor: pointer;
+	text-decoration: none;
+	transition:
+		background-color 0.15s ease,
+		box-shadow 0.15s ease,
+		color 0.15s ease;
 
-	&--reverse {
+	&.ctx__button--reverse {
 		flex-direction: row-reverse;
+	}
+
+	&.ctx__button--icon-only {
+		aspect-ratio: 1 / 1;
+		padding-inline: var(--wp--custom--ctx--ui--padding-y, 0.625rem);
 	}
 
 	&.is-style-outline {
 		background: transparent !important;
-		box-shadow: inset 0px 0px 0px 2px currentColor;
-		color: currentColor;
+		box-shadow: inset 0 0 0 2px currentColor;
+	}
+
+	&.is-style-link {
+		background: transparent !important;
+		box-shadow: none;
+		color: var(--wp--custom--ctx--ui--color, #000);
+		padding: 0 !important;
+		min-height: 0;
+	}
+
+	&.is-style-link:hover {
+		text-decoration: underline;
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow:
+			0 0 0 2px var(--wp--custom--ctx--ui--on-color, #fff),
+			0 0 0 4px var(--wp--custom--ctx--ui--color, #000);
 	}
 
 	.ctx-icon {

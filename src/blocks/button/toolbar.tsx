@@ -1,7 +1,7 @@
 import {
 	AlignmentControl,
 	BlockControls,
-	__experimentalLinkControl as LinkControl,
+	LinkControl,
 } from '@wordpress/block-editor';
 import { Popover, ToolbarButton } from '@wordpress/components';
 import { useState } from '@wordpress/element';
@@ -10,7 +10,11 @@ import { link, pullLeft, pullRight, seen, unseen } from '@wordpress/icons';
 
 import type { ButtonProps } from './types';
 
-const Toolbar = ({ attributes, setAttributes }: ButtonProps) => {
+const Toolbar = ({
+	attributes,
+	setAttributes,
+	setInserterOpen,
+}: ButtonProps) => {
 	const [isEditingURL, setIsEditingURL] = useState(false);
 	const { url, newTab, rel, action, iconRight, iconOnly, icon } = attributes;
 
@@ -40,15 +44,25 @@ const Toolbar = ({ attributes, setAttributes }: ButtonProps) => {
 				/>
 				{action === 'link' && (
 					<ToolbarButton
-						name="link"
 						icon={link}
 						title={__('Link', 'ctx-blocks')}
 						onClick={() => setIsEditingURL(true)}
 					/>
 				)}
+				<ToolbarButton
+					label={
+						icon
+							? __('Change icon', 'ctx-blocks')
+							: __('Select icon', 'ctx-blocks')
+					}
+					onClick={() => setInserterOpen?.(true)}
+				>
+					{icon
+						? __('Change icon', 'ctx-blocks')
+						: __('Select icon', 'ctx-blocks')}
+				</ToolbarButton>
 				{icon && (
 					<ToolbarButton
-						name="iconOnly"
 						icon={iconOnly ? unseen : seen}
 						title={__('Hide text', 'ctx-blocks')}
 						isActive={iconOnly}

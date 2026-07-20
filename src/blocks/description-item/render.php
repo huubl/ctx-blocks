@@ -43,7 +43,14 @@ echo '<div class="' . esc_attr( implode( ' ', array_filter( $image_classes ) ) )
 if ( ! empty( $attributes['imageUrl'] ) ) {
 	echo '<img src="' . esc_url( $attributes['imageUrl'] ) . '" alt="" />';
 } else {
-		echo \Contexis\Blocks\Icons::render_icon( (string) ( $attributes['icon'] ?? '' ) );
+	$selected_icon = WP_Icons_Registry::get_instance()->get_registered_icon( (string) ( $attributes['icon'] ?? '' ) );
+
+	if ( ! empty( $selected_icon['filePath'] ) ) {
+		$icon_content = file_get_contents( $selected_icon['filePath'] );
+		echo '<span class="ctx-icon">' . $icon_content . '</span>';
+	} else {
+		echo '<span class="ctx-icon"></span>';
+	}
 }
 
 echo '</div>';
@@ -54,7 +61,14 @@ echo '</div>';
 if ( ! empty( $attributes['url'] ) ) {
 	echo '<a class="ctx__description-item__link" href="' . esc_url( $attributes['url'] ) . '" target="_blank" rel="noopener noreferrer">';
 	if ( ! empty( $attributes['urlIcon'] ) ) {
-			echo \Contexis\Blocks\Icons::render_icon( (string) $attributes['urlIcon'] );
+		$selected_url_icon = WP_Icons_Registry::get_instance()->get_registered_icon( (string) $attributes['urlIcon'] );
+
+		if ( ! empty( $selected_url_icon['filePath'] ) ) {
+			$icon_content = file_get_contents( $selected_url_icon['filePath'] );
+			echo '<span class="ctx-icon">' . $icon_content . '</span>';
+		} else {
+			echo '<span class="ctx-icon"></span>';
+		}
 	}
 	echo '</a>';
 }

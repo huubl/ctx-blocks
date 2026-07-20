@@ -6,7 +6,6 @@ import {
 import { PanelBody, PanelRow, TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-import IconSelector from '../../components/icon-selector';
 import type { DescriptionItemProps } from './types';
 
 const Inspector = (props: DescriptionItemProps) => {
@@ -22,41 +21,22 @@ const Inspector = (props: DescriptionItemProps) => {
 
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
-	const {
-		url,
-		urlIcon,
-		icon,
-		customIconBackgroundColor,
-		customIconColor,
-	} = attributes;
+	const { url, urlIcon, icon, customIconBackgroundColor, customIconColor } =
+		attributes;
 
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody
-					title={__('Behaviour', 'ctx-blocks')}
-					initialOpen={true}
-				>
+				<PanelBody title={__('Behaviour', 'ctx-blocks')} initialOpen={true}>
 					<TextControl
 						label={__('Link', 'ctx-blocks')}
 						value={url}
 						onChange={(value) => setAttributes({ url: value })}
 					/>
-					<IconSelector
-						label={__('Icon for Link', 'ctx-blocks')}
-						value={urlIcon}
-						onChange={(value) => setAttributes({ urlIcon: value })}
-					/>
 				</PanelBody>
 
 				<PanelBody title={__('Image', 'ctx-blocks')} initialOpen={true}>
-					<PanelRow>
-						<IconSelector
-							label={__('Icon', 'ctx-blocks')}
-							value={icon}
-							onChange={(value) => setAttributes({ icon: value })}
-						/>
-					</PanelRow>
+					<PanelRow></PanelRow>
 				</PanelBody>
 			</InspectorControls>
 			<InspectorControls group="color">
@@ -65,8 +45,7 @@ const Inspector = (props: DescriptionItemProps) => {
 						{
 							label: __('Icon Background', 'ctx-blocks'),
 							colorValue:
-								iconBackgroundColor?.color ||
-								customIconBackgroundColor,
+								iconBackgroundColor?.color || customIconBackgroundColor,
 							onColorChange: (value?: string) => {
 								setIconBackgroundColor?.(value);
 

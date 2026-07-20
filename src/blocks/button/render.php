@@ -1,6 +1,5 @@
 <?php
 
-
 $tag = $attributes['action'] === 'link' && $attributes['url'] ? 'a' : 'button';
 $id = uniqid();
 $href = $attributes['url'] ? 'href="' . $attributes['url'] . '"' : '';
@@ -8,7 +7,7 @@ $target = $attributes['newTab'] ? 'target="_blank"' : '';
 $button_id = $attributes['action'] == "modal" ? "data-modal=\"{$id}\"" : "id=\"{$id}\"";
 
 $classNames = [
-	'button ctx__button',
+	'ctx__button',
 	$attributes['iconOnly'] ? 'ctx__button--icon-only' : '',
 	$attributes['iconRight'] ? 'ctx__button--reverse' : '',
 ];
@@ -19,7 +18,14 @@ echo "<div class='button-container'>";
 echo '<' . join(" ", [$tag, $href, $block_attributes, $button_id, $target]) . '>';
 
 if($attributes['icon']) {
-		echo \Contexis\Blocks\Icons::render_icon( $attributes['icon'] );
+	$selected_icon = WP_Icons_Registry::get_instance()->get_registered_icon( (string) $attributes['icon'] );
+	
+	if ( ! empty( $selected_icon['filePath'] ) ) {
+		$icon_content = file_get_contents( $selected_icon['filePath'] );
+		echo '<span class="ctx-icon">' . $icon_content . '</span>';
+	} else {
+		echo '<span class="ctx-icon"></span>';
+	}
 } 
 if(!$attributes['iconOnly']) {
 	echo "{$attributes['title']}";

@@ -21,6 +21,14 @@ export type ButtonProps = {
 	setAttributes: (attributes: Partial<ButtonAttributes>) => void;
 	insertBlocksAfter?: (block: unknown) => void;
 	onRemove?: () => void;
+	setInserterOpen?: (open: boolean) => void;
+	setShowModal?: (open: boolean) => void;
+};
+
+export type ButtonModalProps = Pick<ButtonProps, 'attributes' | 'setAttributes'> & {
+	showModal: boolean;
+	setShowModal: (open: boolean) => void;
+	template?: [string][];
 };
 
 export type ScriptActions = "toggle" | "hide" | "show" | "scroll" | "";

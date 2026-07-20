@@ -6,15 +6,14 @@ import {
 	withColors,
 } from '@wordpress/block-editor';
 import { compose } from '@wordpress/compose';
-import { useRef } from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 
-import { RenderIconPreview, getBlockIcon, useBlockIcons } from '../../shared/icons';
+import CustomInserterModal from '../../shared/CustomInserter';
+import IconRenderer from '../../shared/components/IconRenderer';
+import useIconStore from '../../shared/Hooks/useIconStore';
 import Inspector from './inspector';
 import Toolbar from './toolbar';
-import type {
-	DescriptionItemProps,
-	MediaLike,
-} from './types';
+import type { DescriptionItemProps, MediaLike } from './types';
 
 function ItemEdit({ ...props }: DescriptionItemProps) {
 	const {
@@ -28,9 +27,12 @@ function ItemEdit({ ...props }: DescriptionItemProps) {
 	} = props;
 
 	const imageRef = useRef<HTMLImageElement | null>(null);
-	const { icons } = useBlockIcons();
-	const selectedIcon = getBlockIcon(icons, icon);
-	const selectedUrlIcon = getBlockIcon(icons, urlIcon);
+	const [isInserterOpen, setInserterOpen] = useState(false);
+	const { selectedIcon, allIcons = [], isLoading } = useIconStore(
+		icon,
+		isInserterOpen
+	);
+	const { selectedIcon: selectedUrlIcon } = useIconStore(urlIcon);
 
 	const onSelectMedia = (media?: MediaLike) => {
 		if (!media?.url) {
@@ -85,7 +87,7 @@ function ItemEdit({ ...props }: DescriptionItemProps) {
 		{
 			template,
 			allowedBlocks: ['core/paragraph', 'core/heading'],
-		}
+		},
 	);
 
 	return (
@@ -98,27 +100,34 @@ function ItemEdit({ ...props }: DescriptionItemProps) {
 				}}
 			>
 				<Inspector {...props} />
-				<Toolbar {...props} onSelectMedia={onSelectMedia} />
+				<Toolbar
+					{...props}
+					onSelectMedia={onSelectMedia}
+					setInserterOpen={setInserterOpen}
+				/>
+				{isInserterOpen && (
+					<CustomInserterModal
+						icons={allIcons}
+						setInserterOpen={setInserterOpen}
+						attributes={props.attributes}
+						setAttributes={setAttributes}
+						isLoading={isLoading}
+					/>
+				)}
 				<div className={imageClasses} style={imageStyle}>
 					{imageUrl ? (
 						<img src={imageUrl} ref={imageRef} />
 					) : (
-						<RenderIconPreview
-							icon={selectedIcon}
-							className="ctx-icon"
-						/>
+						<IconRenderer html={selectedIcon?.content} className="ctx-icon" />
 					)}
 				</div>
 
-				<div
-					className="ctx__description-item__content"
-					{...innerBlockProps}
-				/>
+				<div className="ctx__description-item__content" {...innerBlockProps} />
 				{url && (
 					<div className="ctx__description-item__action">
 						<b>
-							<RenderIconPreview
-								icon={selectedUrlIcon}
+							<IconRenderer
+								html={selectedUrlIcon?.content}
 								className="ctx-icon"
 							/>
 						</b>

@@ -55,24 +55,6 @@
 		"scriptTarget": {
 			"type": "string",
 			"default": ""
-		},
-		"style": {
-			"type": "object",
-			"default": {
-				"spacing": {
-					"padding": {
-						"top": "var:preset|spacing|30",
-						"right": "var:preset|spacing|40",
-						"bottom": "var:preset|spacing|30",
-						"left": "var:preset|spacing|40"
-					}
-				},
-				"color": {
-					"text": "#ffffff",
-					"background": "var(--wp--preset--color--primary)",
-					"link": "#ffffff"
-				}
-			}
 		}
 	},
 	"parent": ["core/group", "core/navigation", "ctx-blocks/card"],
@@ -80,25 +62,11 @@
 		"anchor": true,
 		"html": false,
 		"color": {
-			"link": true,
+			"background": true,
 			"text": true,
-			"background": true
-		},
-		"__experimentalBorder": {
-			"color": true,
-			"radius": true,
-			"style": false,
-			"width": false,
-			"__experimentalDefaultControls": {
-				"radius": true,
-				"style": false,
-				"width": true,
-				"linked": false,
-				"color": true
-			}
+			"gradients": false
 		},
 		"spacing": {
-			"padding": true,
 			"margin": true
 		}
 	},
@@ -111,6 +79,10 @@
 		{
 			"name": "outline",
 			"label": "Outline"
+		},
+		{
+			"name": "link",
+			"label": "Link"
 		}
 	],
 	"example": {

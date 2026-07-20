@@ -1,39 +1,22 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
+	CheckboxControl,
 	Icon,
 	PanelBody,
-	PanelRow,
-	CheckboxControl,
 	SelectControl,
 	TextControl,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-import IconSelector from '../../components/icon-selector';
 import icons from './icons';
 import type { ButtonProps } from './types';
 
-const Inspector = ({ attributes, setAttributes }: ButtonProps) => {
-	const {
-		modalFull,
-		icon,
-		action,
-		script,
-		scriptTarget,
-	} = attributes;
+const Inspector = ({ attributes, setAttributes, setShowModal }: ButtonProps) => {
+	const { modalFull, action, script, scriptTarget } = attributes;
 
 	return (
 		<InspectorControls>
-			<PanelBody title={__('Icon', 'ctx-blocks')} initialOpen={true}>
-				<PanelRow>
-					<IconSelector
-						label={__('Icon', 'ctx-blocks')}
-						value={icon || ''}
-						onChange={(value) => setAttributes({ icon: value })}
-					/>
-				</PanelRow>
-			</PanelBody>
 			<PanelBody title={__('Behaviour', 'ctx-blocks')} initialOpen={true}>
 				<div className="ctx-style-selector">
 					<Button
@@ -64,14 +47,20 @@ const Inspector = ({ attributes, setAttributes }: ButtonProps) => {
 				</div>
 
 				{action === 'modal' && (
-					<CheckboxControl
-						label={__('Full screen size', 'ctx-blocks')}
-						checked={modalFull}
-						onChange={() =>
-							setAttributes({ modalFull: !modalFull })
-						}
-						__nextHasNoMarginBottom
-					/>
+					<>
+						<Button
+							variant="secondary"
+							onClick={() => setShowModal?.(true)}
+						>
+							{__('Edit modal content', 'ctx-blocks')}
+						</Button>
+						<CheckboxControl
+							label={__('Full screen size', 'ctx-blocks')}
+							checked={modalFull}
+							onChange={() => setAttributes({ modalFull: !modalFull })}
+							__nextHasNoMarginBottom
+						/>
+					</>
 				)}
 
 				{action === 'script' && (

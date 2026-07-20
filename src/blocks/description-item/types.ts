@@ -22,6 +22,7 @@ export type DescriptionItemProps = {
 	clientId?: string;
 	name?: string;
 	setAttributes: (attributes: Partial<DescriptionItemAttributes>) => void;
+	setInserterOpen?: (open: boolean) => void;
 	iconColor?: { color?: string; slug?: string };
 	iconBackgroundColor?: { color?: string; slug?: string };
 	setIconColor?: (color?: string) => void;

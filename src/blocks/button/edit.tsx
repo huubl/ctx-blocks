@@ -1,37 +1,28 @@
-import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
+import { RichText, useBlockProps } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
-import { Modal } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import { RenderIconPreview, getBlockIcon, useBlockIcons } from '../../shared/icons';
+import CustomInserterModal from '../../shared/CustomInserter';
+import IconRenderer from '../../shared/components/IconRenderer';
+import useIconStore from '../../shared/Hooks/useIconStore';
 import Inspector from './inspector';
+import ButtonModal from './modal';
 import Toolbar from './toolbar';
 import type { ButtonProps } from './types';
 
 export default function ButtonEdit({ ...props }: ButtonProps) {
 	const {
-		attributes: {
-			title,
-			size,
-			modalTitle,
-			modalFull,
-			action,
-			icon,
-			iconRight,
-			iconOnly,
-		},
+		attributes: { title, size, icon, iconRight, iconOnly },
 		setAttributes,
 		className,
 	} = props;
 
 	const [deleteButton, setDeleteButton] = useState(false);
 	const [showModal, setShowModal] = useState(false);
-	const { icons } = useBlockIcons();
+	const [isInserterOpen, setInserterOpen] = useState(false);
 
-	const hasModal = action === 'modal';
 	const template: [string][] = [['core/paragraph']];
-	const selectedIcon = getBlockIcon(icons, icon);
 
 	const buttonClasses = [
 		className || false,
@@ -45,25 +36,33 @@ export default function ButtonEdit({ ...props }: ButtonProps) {
 
 	const blockProps = useBlockProps({ className: buttonClasses });
 
+	const {
+		selectedIcon,
+		allIcons = [],
+		isLoading,
+	} = useIconStore(icon, isInserterOpen);
+
 	return (
 		<div {...blockProps}>
-			<Inspector {...props} />
-			<Toolbar {...props} />
-			<span
-				onClick={() => {
-					if (!hasModal) {
-						return;
-					}
-					setShowModal(true);
-				}}
-			>
-				{icon && (
-					<RenderIconPreview icon={selectedIcon} className="ctx-icon" />
+			<Inspector {...props} setShowModal={setShowModal} />
+			<Toolbar {...props} setInserterOpen={setInserterOpen} />
+			{isInserterOpen && (
+				<CustomInserterModal
+					icons={allIcons}
+					setInserterOpen={setInserterOpen}
+					attributes={props.attributes}
+					setAttributes={setAttributes}
+					isLoading={isLoading}
+				/>
+			)}
+			<span>
+				{icon && !isLoading && (
+					<IconRenderer icon={selectedIcon} className="ctx-icon" />
 				)}
 				{!iconOnly && (
 					<RichText
 						tagName="span"
-						value={title}
+						value={title || ''}
 						disableLineBreaks={true}
 						onChange={(value) => setAttributes({ title: value })}
 						placeholder={__('Button title', 'ctx-blocks')}
@@ -91,27 +90,13 @@ export default function ButtonEdit({ ...props }: ButtonProps) {
 				)}
 			</span>
 
-			{showModal && (
-				<Modal
-					title={__('Edit Modal content', 'ctx-blocks')}
-					isOpen={showModal}
-					onRequestClose={() => {
-						setShowModal(false);
-					}}
-					isFullScreen={modalFull}
-				>
-					<RichText
-						tagName="h1"
-						value={modalTitle}
-						onChange={(value) =>
-							setAttributes({ modalTitle: value })
-						}
-						placeholder={__('Modal title', 'ctx-blocks')}
-						allowedFormats={['core/bold', 'core/italic']}
-					/>
-					<InnerBlocks template={template} />
-				</Modal>
-			)}
+			<ButtonModal
+				attributes={props.attributes}
+				setAttributes={setAttributes}
+				showModal={showModal}
+				setShowModal={setShowModal}
+				template={template}
+			/>
 		</div>
 	);
 }

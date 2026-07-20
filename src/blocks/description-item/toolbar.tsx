@@ -1,13 +1,13 @@
 import {
 	AlignmentToolbar,
 	BlockControls,
-	__experimentalLinkControl as LinkControl,
+	LinkControl,
 	MediaReplaceFlow,
 } from '@wordpress/block-editor';
 import { Popover, ToolbarButton } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { link } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
+import { link, plus } from '@wordpress/icons';
 
 import type { DescriptionItemProps, MediaLike } from './types';
 
@@ -20,8 +20,7 @@ type ToolbarProps = DescriptionItemProps & {
 const Toolbar = (props: ToolbarProps) => {
 	const { attributes, setAttributes, onSelectMedia } = props;
 
-	const { textAlign, imageId, imageUrl, url, opensInNewTab, rel } =
-		attributes;
+	const { textAlign, imageId, imageUrl, url, opensInNewTab, rel } = attributes;
 
 	const [isEditingURL, setIsEditingURL] = useState(false);
 
@@ -60,7 +59,14 @@ const Toolbar = (props: ToolbarProps) => {
 					/>
 				)}
 				<ToolbarButton
-					name="link"
+					title={__('Select icon', 'ctx-blocks')}
+					onClick={() => props.setInserterOpen?.(true)}
+				>
+					{attributes.icon
+						? __('Change icon', 'ctx-blocks')
+						: __('Select icon', 'ctx-blocks')}
+				</ToolbarButton>
+				<ToolbarButton
 					icon={link}
 					title={__('Link', 'ctx-blocks')}
 					onClick={() => setIsEditingURL(true)}
@@ -78,10 +84,7 @@ const Toolbar = (props: ToolbarProps) => {
 				>
 					<LinkControl
 						value={{ url, opensInNewTab }}
-						onChange={(linkObject: {
-							url?: string;
-							opensInNewTab?: boolean;
-						}) =>
+						onChange={(linkObject: { url?: string; opensInNewTab?: boolean }) =>
 							setAttributes({
 								rel,
 								url: linkObject.url,
