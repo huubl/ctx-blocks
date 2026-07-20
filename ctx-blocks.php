@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     CTX Blocks 
  * Description:     Additional Blocks for Gutenberg
- * Version:         3.1.9
+ * Version:         3.2.0
  * Requires at least: 6.7
  * Requires PHP:      8.3
  * Author:          Thomas Gollenia
@@ -14,6 +14,9 @@
  */
 
 use Contexis\WpGitHubUpdater\WordPressPluginUpdater;
+use Contexis\WpGitHubUpdater\PluginMetadata;
+use Contexis\WpGitHubUpdater\GitHubRepository;
+use Contexis\WpGitHubUpdater\GitHubReleaseProvider;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -32,13 +35,13 @@ function ctx_block_init() {
 add_action( 'init', 'ctx_block_init' );
 
 require_once __DIR__ . '/lib/Posts.php';
-require_once __DIR__ . '/lib/Icons.php';
+
 
 
 function ctx_blocks_load_textdomain() {
 	load_plugin_textdomain('ctx-blocks', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
 }
-add_action( 'plugins_loaded', 'ctx_blocks_load_textdomain' );
+add_action( 'init', 'ctx_blocks_load_textdomain' );
 
 
 
@@ -69,8 +72,26 @@ function ctx_add_class_to_list_block( $block_content, $block ) {
 }
 add_filter( 'render_block', 'ctx_add_class_to_list_block', 10, 2 );
 
-WordPressPluginUpdater::fromPluginFile(
-    pluginFile: __FILE__,
-    owner: 'gollenia',
-    repositoryName: 'ctx-blocks',
-)->registerHooks();
+function ctx_blocks_register_updater() {
+	static $registered = false;
+
+	if ( $registered ) {
+		return;
+	}
+
+	$plugin = PluginMetadata::fromPluginFile( __FILE__ );
+	$repository = new GitHubRepository( 'gollenia', 'ctx-blocks' );
+	$release_provider = new GitHubReleaseProvider( $repository, (string) ( $plugin->data['Version'] ?? '' ) );
+
+	( new WordPressPluginUpdater(
+		plugin: $plugin,
+		repository: $repository,
+		releaseProvider: $release_provider,
+	) )->registerHooks();
+
+	$registered = true;
+}
+
+add_action( 'load-plugins.php', 'ctx_blocks_register_updater' );
+add_action( 'load-update-core.php', 'ctx_blocks_register_updater' );
+add_action( 'load-update.php', 'ctx_blocks_register_updater' );
