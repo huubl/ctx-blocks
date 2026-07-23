@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @var array{
+ *   iconColor?: array
+ * } $attributes
+ * 
+ * @var string $content
+ */
+
 $classes = [ 'ctx__description-item' ];
 
 $block_attributes = get_block_wrapper_attributes(
@@ -45,8 +53,8 @@ if ( ! empty( $attributes['imageUrl'] ) ) {
 } else {
 	$selected_icon = WP_Icons_Registry::get_instance()->get_registered_icon( (string) ( $attributes['icon'] ?? '' ) );
 
-	if ( ! empty( $selected_icon['filePath'] ) ) {
-		$icon_content = file_get_contents( $selected_icon['filePath'] );
+	if ( ! empty( $selected_icon['file_path'] ) ) {
+		$icon_content = file_get_contents( $selected_icon['file_path'] );
 		echo '<span class="ctx-icon">' . $icon_content . '</span>';
 	} else {
 		echo '<span class="ctx-icon"></span>';
