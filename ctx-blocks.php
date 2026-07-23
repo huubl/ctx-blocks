@@ -45,7 +45,7 @@ add_action( 'init', 'ctx_blocks_load_textdomain' );
 
 
 
-function modify_render_block_defaults($block_content, $block, $instance) {
+function modify_render_block_defaults(string $block_content, array $block, $instance): string {
 	if($block['blockName'] !== "core/latest-posts" || !key_exists('animateOnScroll', $block['attrs'])) {
 		return $block_content;
 	}
@@ -58,19 +58,6 @@ function modify_render_block_defaults($block_content, $block, $instance) {
 
 add_filter( "render_block", "modify_render_block_defaults", 10, 3 );
 
-
-function ctx_add_class_to_list_block( $block_content, $block ) {
-
-    if ( 'core/list' === $block['blockName'] ) {
-        $block_content = new WP_HTML_Tag_Processor( $block_content );
-        $block_content->next_tag(); /* first tag should always be ul or ol */
-        $block_content->add_class( 'core-block' );
-        $block_content->get_updated_html();
-    }
-
-    return $block_content;
-}
-add_filter( 'render_block', 'ctx_add_class_to_list_block', 10, 2 );
 
 function ctx_blocks_register_updater() {
 	static $registered = false;
