@@ -21,9 +21,6 @@ const Inspector = (props: ConditionalProps) => {
 			toDate,
 			usersOnly,
 			hideWithinDateRange,
-			showLoginNotice,
-			includeLoginForm,
-			loginNotice,
 			hideOnMobile,
 			hideOnDesktop,
 		},
@@ -100,35 +97,6 @@ const Inspector = (props: ConditionalProps) => {
 						setAttributes({ usersOnly: !usersOnly })
 					}
 				/>
-
-				<ToggleControl
-					label={__('Show login notice', 'ctx-blocks')}
-					checked={showLoginNotice}
-					onChange={(value) =>
-						setAttributes({ showLoginNotice: !showLoginNotice })
-					}
-				/>
-
-				{showLoginNotice && (
-					<>
-						<TextControl
-							label={__('Login notice', 'ctx-blocks')}
-							value={loginNotice}
-							onChange={(value) =>
-								setAttributes({ loginNotice: value })
-							}
-						/>
-						<CheckboxControl
-							label={__('Include login form', 'ctx-blocks')}
-							checked={includeLoginForm}
-							onChange={(value) =>
-								setAttributes({
-									includeLoginForm: !includeLoginForm,
-								})
-							}
-						/>
-					</>
-				)}
 			</PanelBody>
 		</InspectorControls>
 	);

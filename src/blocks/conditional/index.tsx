@@ -4,6 +4,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import metadata from './block.json';
 import edit from './edit';
 import './editor.scss';
+import './style.scss';
 import icon from './icon';
 import type { BlockMetadata } from '../types';
 

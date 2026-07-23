@@ -20,22 +20,6 @@
 			"type": "boolean",
 			"default": false
 		},
-		"showLoginNotice": {
-			"type": "boolean",
-			"default": false
-		},
-		"loginNotice": {
-			"type": "string",
-			"default": ""
-		},
-		"includeLoginForm": {
-			"type": "boolean",
-			"default": false
-		},
-		"includeRegisterLink": {
-			"type": "boolean",
-			"default": true
-		},
 		"hideWithinDateRange": {
 			"type": "boolean",
 			"default": false
@@ -49,8 +33,8 @@
 			"default": false
 		}
 	},
-	"parent": ["core/navigation", "core/group"],
 	"editorStyle": "file:./index.css",
 	"editorScript": "file:./index.js",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
 }
