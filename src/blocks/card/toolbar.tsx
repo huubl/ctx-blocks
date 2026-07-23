@@ -52,6 +52,7 @@ const Toolbar = ({ attributes, setAttributes, onSelectMedia }: ToolbarProps) => 
 							setAttributes({
 								imageId: 0,
 								imageUrl: '',
+								imageAlt: '',
 								focalPoint: undefined,
 							});
 						}}
