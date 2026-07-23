@@ -1,0 +1,11 @@
+@media (max-width: 767px) {
+	.ctx-conditional--hide-mobile {
+		display: none !important;
+	}
+}
+
+@media (min-width: 768px) {
+	.ctx-conditional--hide-desktop {
+		display: none !important;
+	}
+}

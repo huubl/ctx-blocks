@@ -1,28 +1,48 @@
 <?php
 
-require_once plugin_dir_path( __FILE__ ) . 'helpers.php';
+/**
+ * @var array<string, mixed> $attributes
+ * @var string               $content
+ */
 
-$attributes['content'] = $content;
+// Keep the date behaviour in sync with the editor preview: an empty boundary
+// represents an open-ended range.
+$from_date = $attributes['fromDate'] ?? '';
+$to_date   = $attributes['toDate'] ?? '';
+$from      = $from_date ? strtotime( $from_date ) : strtotime( '1970-01-01' );
+$to        = $to_date ? strtotime( $to_date ) : strtotime( '2100-01-01' );
+$now       = time();
 
-$from = strtotime($attributes['fromDate'] ?? "1970-01-01");
-$to = strtotime($attributes['toDate'] ?? "2100-01-01");
-$now = time();
+$is_within_date_range = $now >= $from && $now <= $to;
+$hide_for_date        = ! empty( $attributes['hideWithinDateRange'] )
+	? $is_within_date_range
+	: ! $is_within_date_range;
 
-$is_within = $now >= $from && $now <= $to;
-$hide = $attributes['hideWithinDateRange'] ? $is_within : ! $is_within;
+if ( $hide_for_date ) {
+	return;
+}
 
-if($hide) return;
+if ( ! empty( $attributes['usersOnly'] ) && ! is_user_logged_in() ) {
+	return;
+}
 
-if($attributes['usersOnly'] && !is_user_logged_in()) echo $this->get_login_info($attributes);
+// Device visibility is handled in CSS so it can react to the visitor's
+// viewport. Add a wrapper only when one of the corresponding rules is active.
+$classes = array();
 
-if(!$attributes['showLoginNotice']) return;
+if ( ! empty( $attributes['hideOnMobile'] ) ) {
+	$classes[] = 'ctx-conditional--hide-mobile';
+}
 
-$result = "<div class='login-info'>";
-$result .= $attributes['loginNotice'] ? "<p class=\"login-notice\">" . $attributes['loginNotice'] . "</p>" : "";
-$result .= $attributes['includeLoginForm'] ? wp_login_form( [
-	'echo' => false,
-] ) : "";
-$result .= $attributes['includeRegisterLink'] ? "<p class=\"register-link\">" . wp_register( '', '', false ) . "</p>" : "";
-$result .= "</div>";
+if ( ! empty( $attributes['hideOnDesktop'] ) ) {
+	$classes[] = 'ctx-conditional--hide-desktop';
+}
 
-echo $result;
+if ( $classes ) {
+	echo '<div class="' . esc_attr( implode( ' ', $classes ) ) . '">';
+	echo $content;
+	echo '</div>';
+	return;
+}
+
+echo $content;

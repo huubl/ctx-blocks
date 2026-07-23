@@ -2,9 +2,6 @@ export type ConditionalAttributes = {
 	fromDate?: string;
 	toDate?: string;
 	usersOnly?: boolean;
-	showLoginNotice?: boolean;
-	loginNotice?: string;
-	includeLoginForm?: boolean;
 	hideWithinDateRange?: boolean;
 	hideOnMobile?: boolean;
 	hideOnDesktop?: boolean;
