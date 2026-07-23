@@ -63,7 +63,7 @@ const CardSave = (props: CardProps) => {
 		padding: '0 !important',
 		'--hover-color': customHoverColor || undefined,
 		gap: blockGap
-			? blockGap.replaceAll('|', '--').replace(':', '(--wp--') + ')'
+			? `${blockGap.replaceAll('|', '--').replace(':', '(--wp--')})`
 			: undefined,
 	};
 
@@ -93,9 +93,7 @@ const CardSave = (props: CardProps) => {
 						{badgeText}
 					</b>
 				)}
-				{imageUrl && (
-					<img style={{ objectPosition }} src={imageUrl} />
-				)}
+				{imageUrl && <img style={{ objectPosition }} src={imageUrl} />}
 				{!!labelText && (
 					<label
 						className={`ctx__card-label ${accentClass ?? ''}`}
