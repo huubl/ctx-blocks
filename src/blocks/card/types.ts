@@ -7,6 +7,7 @@ export type CardAttributes = {
 	hover?: boolean;
 	imageUrl?: string;
 	imageId?: number;
+	imageAlt?: string;
 	shadow?: boolean;
 	url?: string;
 	badgeText?: string;
@@ -47,6 +48,8 @@ export type CardProps = {
 export type MediaLike = {
 	id?: number;
 	url?: string;
+	alt?: string;
+	alt_text?: string;
 	sizes?: {
 		large?: { url?: string };
 	};
