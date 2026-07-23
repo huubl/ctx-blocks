@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * @var array{
+ *     action?: string,
+ *     url?: string,
+ *     newTab?: bool,
+ *     iconOnly?: bool,
+ *     iconRight?: bool,
+ *     icon?: string,
+ * } $attributes
+ * 
+ * @var string $content
+ */
+
 $tag = $attributes['action'] === 'link' && $attributes['url'] ? 'a' : 'button';
 $id = uniqid();
 $href = $attributes['url'] ? 'href="' . $attributes['url'] . '"' : '';
@@ -19,9 +32,9 @@ echo '<' . join(" ", [$tag, $href, $block_attributes, $button_id, $target]) . '>
 
 if($attributes['icon']) {
 	$selected_icon = WP_Icons_Registry::get_instance()->get_registered_icon( (string) $attributes['icon'] );
-	
-	if ( ! empty( $selected_icon['filePath'] ) ) {
-		$icon_content = file_get_contents( $selected_icon['filePath'] );
+	//var_dump($selected_icon);
+	if ( ! empty( $selected_icon['file_path'] ) ) {
+		$icon_content = file_get_contents( $selected_icon['file_path'] );
 		echo '<span class="ctx-icon">' . $icon_content . '</span>';
 	} else {
 		echo '<span class="ctx-icon"></span>';
