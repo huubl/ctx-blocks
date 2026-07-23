@@ -9,8 +9,7 @@
 	"category": "layout",
 	"attributes": {
 		"accentColor": {
-			"type": "string",
-			"default": "var(--wp--preset--color--primary)"
+			"type": "string"
 		},
 		"customAccentColor": {
 			"type": "string",
@@ -78,10 +77,13 @@
 		"style": {
 			"type": "object",
 			"default": {
-				"color": {
-					"background": "var(--wp--preset--color--white)",
-					"text": "var(--wp--preset--color--text)",
-					"accentColor": "var(--wp--preset--color--primary)"
+				"spacing": {
+					"padding": {
+						"top": "1rem",
+						"right": "1rem",
+						"bottom": "1rem",
+						"left": "1rem"
+					}
 				}
 			}
 		}
@@ -134,5 +136,6 @@
 	},
 	"editorStyle": "file:./index.css",
 	"editorScript": "file:./index.js",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
 }

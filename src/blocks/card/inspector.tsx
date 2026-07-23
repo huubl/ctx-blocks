@@ -18,6 +18,7 @@ const Inspector = (props: CardProps) => {
 	const {
 		attributes: {
 			imageUrl,
+			imageAlt,
 			shadow,
 			focalPoint,
 			labelText,
@@ -116,6 +117,15 @@ const Inspector = (props: CardProps) => {
 				</PanelBody>
 
 				<PanelBody title={__('Image', 'ctx-blocks')} initialOpen={false}>
+					<TextControl
+						label={__('Alt text', 'ctx-blocks')}
+						help={__(
+							'Leave empty to use the alt text from the Media Library.',
+							'ctx-blocks'
+						)}
+						value={imageAlt ?? ''}
+						onChange={(value) => setAttributes({ imageAlt: value })}
+					/>
 					<FocalPointPicker
 						__nextHasNoMarginBottom
 						label={__('Focal point picker')}

@@ -5,7 +5,15 @@ import {
 } from '@wordpress/block-editor';
 import { colord } from 'colord';
 
+import Save from './save';
+
 const deprecated = [
+	// Cards saved before the server-side renderer was introduced used the
+	// current static markup. Keep it for validation and migration of content
+	// already stored in posts.
+	{
+		save: Save,
+	},
 	{
 		attributes: {
 			secondaryColor: { type: 'string', default: '' },

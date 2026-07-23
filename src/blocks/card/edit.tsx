@@ -46,12 +46,17 @@ export default function CardEdit({ ...props }: CardProps) {
 
 	const onSelectMedia = (media?: MediaLike) => {
 		if (!media?.url) {
-			setAttributes({ imageUrl: undefined, imageId: undefined });
+			setAttributes({
+				imageUrl: undefined,
+				imageId: undefined,
+				imageAlt: undefined,
+			});
 			return;
 		}
 		setAttributes({
 			imageUrl: media.sizes?.large?.url ?? media.url,
 			imageId: media.id,
+			imageAlt: '',
 		});
 	};
 
@@ -88,12 +93,14 @@ export default function CardEdit({ ...props }: CardProps) {
 
 	const accentColorValue = customAccentColor
 		? customAccentColor
-		: accentColor?.color ?? 'var(--primary)';
+		: accentColor?.color;
 
-	const accentStyle = {
-		background: accentColorValue,
-		color: colord(accentColorValue).isDark() ? '#ffffff' : '#000000',
-	};
+	const accentStyle = accentColorValue
+		? {
+				background: accentColorValue,
+				color: colord(accentColorValue).isDark() ? '#ffffff' : '#000000',
+			}
+		: undefined;
 
 	const classes = [
 		'ctx__card',
@@ -114,10 +121,10 @@ export default function CardEdit({ ...props }: CardProps) {
 	};
 
 	const contentStyle = {
-		paddingTop: blockProps.style?.paddingTop ?? '1rem',
-		paddingBottom: blockProps.style?.paddingBottom ?? '1rem',
-		paddingLeft: blockProps.style?.paddingLeft ?? '1rem',
-		paddingRight: blockProps.style?.paddingRight ?? '1rem',
+		paddingTop: blockProps.style?.paddingTop,
+		paddingBottom: blockProps.style?.paddingBottom,
+		paddingLeft: blockProps.style?.paddingLeft,
+		paddingRight: blockProps.style?.paddingRight,
 	};
 
 	const innerBlockProps = useInnerBlocksProps(

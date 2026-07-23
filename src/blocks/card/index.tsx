@@ -21,7 +21,7 @@ const settings = {
 		hoverColor: 'hoverColor',
 	})(Edit),
 	transforms,
-	save: Save,
+	save: () => <InnerBlocks.Content />,
 };
 
 registerBlockType(name, settings);
