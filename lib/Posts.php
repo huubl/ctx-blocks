@@ -270,7 +270,8 @@ final class Posts {
 			'<div class="wp-block-latest-posts__post-more-link"><a href="%1$s"><span>%2$s</span>%3$s</a></div>',
 			$post_link,
 				__( 'Read more' ),
-				Icons::render_icon( 'arrow_forward' )
+				'<span class="wp-block-latest-posts__post-more-link-icon" aria-hidden="true"></span>'
+				
 			);
 	}
 
